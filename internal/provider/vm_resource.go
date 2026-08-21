@@ -107,6 +107,12 @@ func (r *vmResource) Create(ctx context.Context, req resource.CreateRequest, res
 		storageSize := int(state.StorageSize.ValueInt64())
 		body.StorageSize = &storageSize
 	}
+	if state.InitScript.ValueString() != "" {
+		body.InitScript = state.InitScript.ValueStringPointer()
+	}
+	if state.Gpu.ValueString() != "" {
+		body.Gpu = state.Gpu.ValueStringPointer()
+	}
 
 	tflog.Debug(ctx, fmt.Sprintf("Creating vm: %s.", vmResourceLogIdentifier(&state)))
 	vmResp, err := r.uc.client.CreateVMWithResponse(ctx, state.ProjectId.ValueString(), state.Location.ValueString(), state.Name.ValueString(), body)
