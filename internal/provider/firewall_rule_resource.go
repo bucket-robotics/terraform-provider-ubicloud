@@ -69,6 +69,9 @@ func (r *firewallRuleResource) Create(ctx context.Context, req resource.CreateRe
 	if state.PortRange.ValueString() != "" {
 		body.PortRange = state.PortRange.ValueStringPointer()
 	}
+	if state.Protocol.ValueString() != "" {
+		body.Protocol = state.Protocol.ValueStringPointer()
+	}
 
 	tflog.Debug(ctx, fmt.Sprintf("Creating firewall rule: project_id=%s, location=%s, firewall_reference: %s", state.ProjectId.ValueString(), state.Location.ValueString(), state.FirewallReference.ValueString()))
 	firewallRuleResp, err := r.uc.client.CreateLocationFirewallRuleWithResponse(ctx, state.ProjectId.ValueString(), state.Location.ValueString(), state.FirewallReference.ValueString(), body)
